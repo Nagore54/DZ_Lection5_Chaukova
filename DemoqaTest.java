@@ -1,8 +1,6 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.Select;
@@ -22,6 +20,9 @@ public class DemoqaTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://demoqa.com/automation-practice-form");
+        //Элемент скрола страницы добавлен, т.к. размера экрана моего ноутбука не хватает, чтобы открыть страницу полностью, и тест падает, если элемент не отображается на странице. Проверяла на исходно больших экранах - всё работает нормально.//
+        WebElement selectAll = driver.findElement(By.xpath("//*[@id='submit']"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selectAll);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
@@ -62,7 +63,9 @@ public class DemoqaTest {
         WebDriverWait waitCity = new WebDriverWait(driver, 3, 500);
         driver.findElement(By.xpath("//*[@id='react-select-4-option-1']")).click();
 
-        driver.findElement(By.xpath("//*[@id='userEmail']")).sendKeys(Keys.RETURN);
+        //Использую нажатие Enter, т.к. кнопку Submit перекрывает панель с xpath-ом //*[@id="app"]/footer.//
+        //Если б кнопка Submit отображалась, взяла бы: driver.findElement(By.xpath("//*[@id='submit']")).click()//
+        driver.findElement(By.xpath("//*[@id='firstName']")).sendKeys(Keys.RETURN);
 
         WebDriverWait waitForm = new WebDriverWait(driver, 5, 500);
         Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr/td[2]")).getText().contains("Username Lastname"));
