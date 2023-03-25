@@ -2,39 +2,49 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.util.concurrent.TimeUnit;
-
-import static com.codeborne.selenide.Configuration.pageLoadTimeout;
-
 
 public class DemoqaTest {
     WebDriver driver;
 
     @BeforeEach
-    public void lunchBrowser() {
+    public void startBrowser() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://demoqa.com/automation-practice-form");
-        //Элемент скрола страницы добавлен, т.к. размера экрана моего ноутбука не хватает, чтобы открыть страницу полностью, и тест падает, если элемент не отображается на странице. Проверяла на исходно больших экранах - всё работает нормально.//
         WebElement selectAll = driver.findElement(By.xpath("//*[@id='submit']"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selectAll);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
     @Test
     public void registrationForm() {
-        driver.findElement(By.xpath("//*[@id='firstName']")).sendKeys("Username");
-        driver.findElement(By.xpath("//*[@id='lastName']")).sendKeys("Lastname");
-        driver.findElement(By.xpath("//*[@id='userEmail']")).sendKeys("username@gmail.com");
-        driver.findElement(By.xpath("//*[@id='genterWrapper']/div[2]/div[2]/label")).click();
-        driver.findElement(By.xpath("//*[@id='userNumber']")).sendKeys("1234567895");
+        String name1 = "Username";
+        String name2 = "Lastname";
+        String name = "Username Lastname";
+        String email = "username@gmail.com";
+        String number = "1234567895";
+        String address = "Current Address";
 
+        String gender = "Female";
+        String DateofBirth = "10 April,1990";
+        String subjects = "Chemistry";
+        String hobbies = "Sports, Music";
+        String StateandCity = "Uttar Pradesh Lucknow";
+        String file = "C:\\Users\\olgac\\Pictures\\sdcard\\BadCom.jpg";
+        String picture = "BadCom.jpg";
+
+
+        driver.findElement(By.xpath("//*[@id='firstName']")).sendKeys(name1);
+        driver.findElement(By.xpath("//*[@id='lastName']")).sendKeys(name2);
+        driver.findElement(By.xpath("//*[@id='userEmail']")).sendKeys(email);
+        driver.findElement(By.xpath("//*[@id='genterWrapper']/div[2]/div[2]/label")).click();
+        driver.findElement(By.xpath("//*[@id='userNumber']")).sendKeys(number);
         driver.findElement(By.xpath("//*[@id='dateOfBirthInput']")).click();
+
         Select month = new Select(driver.findElement(By.xpath("//*[@class='react-datepicker__month-select']")));
         month.selectByVisibleText("April");
         month.selectByIndex(3);
@@ -44,40 +54,38 @@ public class DemoqaTest {
         year.selectByValue("1990");
 
         driver.findElement(By.xpath("//*[@class='react-datepicker__month']/div[2]/div[3]")).click();
-
         driver.findElement(By.xpath("//*[@id='subjectsWrapper']/div[2]")).click();
+
         driver.findElement(By.xpath("//*[@id='subjectsInput']")).sendKeys("e");
         WebDriverWait waitSubjects = new WebDriverWait(driver, 3, 500);
-        driver.findElement(By.xpath("//*[@id='react-select-2-option-1']")).click();
 
+        driver.findElement(By.xpath("//*[@id='react-select-2-option-1']")).click();
         driver.findElement(By.xpath("//*[@id='hobbiesWrapper']/div[2]/div[1]/label")).click();
         driver.findElement(By.xpath("//*[@id='hobbiesWrapper']/div[2]/div[3]/label")).click();
-        driver.findElement(By.xpath("//*[@id='currentAddress']")).sendKeys("Current Address");
-
+        driver.findElement(By.xpath("//input[@type='file']")).sendKeys(file);
+        driver.findElement(By.xpath("//*[@id='currentAddress']")).sendKeys(address);
 
         driver.findElement(By.xpath("//*[@id='stateCity-wrapper']/div[2]/div")).click();
         WebDriverWait waitState = new WebDriverWait(driver, 3, 500);
+
         driver.findElement(By.xpath("//*[@id='react-select-3-option-1']")).click();
 
         driver.findElement(By.xpath("//*[@id='stateCity-wrapper']/div[3]/div")).click();
         WebDriverWait waitCity = new WebDriverWait(driver, 3, 500);
-        driver.findElement(By.xpath("//*[@id='react-select-4-option-1']")).click();
 
-        //Использую нажатие Enter, т.к. кнопку Submit перекрывает панель с xpath-ом //*[@id="app"]/footer.//
-        //Если б кнопка Submit отображалась, взяла бы: driver.findElement(By.xpath("//*[@id='submit']")).click()//
-        driver.findElement(By.xpath("//*[@id='firstName']")).sendKeys(Keys.RETURN);
+        driver.findElement(By.xpath("//*[@id='react-select-4-option-1']")).click();
+        driver.findElement(By.xpath("//*[@id='submit']")).click();
 
         WebDriverWait waitForm = new WebDriverWait(driver, 5, 500);
-        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr/td[2]")).getText().contains("Username Lastname"));
-        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[2]/td[2]")).getText().contains("username@gmail.com"));
-        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[3]/td[2]")).getText().contains("Female"));
-        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[4]/td[2]")).getText().contains("1234567895"));
-        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[5]/td[2]")).getText().contains("10 April,1990"));
-        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[6]/td[2]")).getText().contains("Chemistry"));
-        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[7]/td[2]")).getText().contains("Sports, Music"));
-        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[9]/td[2]")).getText().contains("Current Address"));
-        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[10]/td[2]")).getText().contains("Uttar Pradesh Lucknow"));
-
-
+        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr/td[2]")).getText().contains(name));
+        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[2]/td[2]")).getText().contains(email));
+        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[3]/td[2]")).getText().contains(gender));
+        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[4]/td[2]")).getText().contains(number));
+        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[5]/td[2]")).getText().contains(DateofBirth));
+        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[6]/td[2]")).getText().contains(subjects));
+        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[7]/td[2]")).getText().contains(hobbies));
+        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[8]/td[2]")).getText().contains(picture));
+        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[9]/td[2]")).getText().contains(address));
+        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[10]/td[2]")).getText().contains(StateandCity));
     }
 }

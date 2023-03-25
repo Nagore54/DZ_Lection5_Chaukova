@@ -6,7 +6,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class openBrowsers {
+public class OpenBrowsers {
 
     @Test
     public void openCromeTest() {
@@ -19,7 +19,7 @@ public class openBrowsers {
     }
 
     @Test
-    public void openEdgeTest() {
+    public void penEdgeTest() {
         WebDriverManager.edgedriver().setup();
         WebDriver driver = new EdgeDriver();
 
