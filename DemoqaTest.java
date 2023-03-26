@@ -4,6 +4,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 public class DemoqaTest {
@@ -22,13 +24,12 @@ public class DemoqaTest {
 
     @Test
     public void registrationForm() {
-        String name1 = "Username";
-        String name2 = "Lastname";
-        String name = "Username Lastname";
-        String email = "username@gmail.com";
+        String Username = "Vladislav";
+        String Lastname = "Lantratov";
+        String fullname = "Vladislav Lantratov";
+        String email = "VladLantratov@gmail.com";
         String number = "1234567895";
-        String address = "Current Address";
-
+        String address = "ulitca Pushkina dom Kolotushkina";
         String gender = "Female";
         String DateofBirth = "10 April,1990";
         String subjects = "Chemistry";
@@ -37,9 +38,8 @@ public class DemoqaTest {
         String file = "C:\\Users\\olgac\\Pictures\\sdcard\\BadCom.jpg";
         String picture = "BadCom.jpg";
 
-
-        driver.findElement(By.xpath("//*[@id='firstName']")).sendKeys(name1);
-        driver.findElement(By.xpath("//*[@id='lastName']")).sendKeys(name2);
+        driver.findElement(By.xpath("//*[@id='firstName']")).sendKeys(Username);
+        driver.findElement(By.xpath("//*[@id='lastName']")).sendKeys(Lastname);
         driver.findElement(By.xpath("//*[@id='userEmail']")).sendKeys(email);
         driver.findElement(By.xpath("//*[@id='genterWrapper']/div[2]/div[2]/label")).click();
         driver.findElement(By.xpath("//*[@id='userNumber']")).sendKeys(number);
@@ -77,7 +77,7 @@ public class DemoqaTest {
         driver.findElement(By.xpath("//*[@id='submit']")).click();
 
         WebDriverWait waitForm = new WebDriverWait(driver, 5, 500);
-        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr/td[2]")).getText().contains(name));
+        Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr/td[2]")).getText().contains(fullname));
         Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[2]/td[2]")).getText().contains(email));
         Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[3]/td[2]")).getText().contains(gender));
         Assertions.assertTrue(driver.findElement(By.xpath("//*[@class='modal-body']/div/table/tbody/tr[4]/td[2]")).getText().contains(number));
