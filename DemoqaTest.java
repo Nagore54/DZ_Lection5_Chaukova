@@ -35,7 +35,8 @@ public class DemoqaTest {
         String subjects = "Chemistry";
         String hobbies = "Sports, Music";
         String StateandCity = "Uttar Pradesh Lucknow";
-        String file = "C:\\Users\\olgac\\Pictures\\sdcard\\BadCom.jpg";
+        File file = new File("C:\\Users\\olgac\\Pictures\\sdcard\\BadCom.jpg");
+        String photo = file.getAbsolutePath();
         String picture = "BadCom.jpg";
 
         driver.findElement(By.xpath("//*[@id='firstName']")).sendKeys(Username);
@@ -62,7 +63,7 @@ public class DemoqaTest {
         driver.findElement(By.xpath("//*[@id='react-select-2-option-1']")).click();
         driver.findElement(By.xpath("//*[@id='hobbiesWrapper']/div[2]/div[1]/label")).click();
         driver.findElement(By.xpath("//*[@id='hobbiesWrapper']/div[2]/div[3]/label")).click();
-        driver.findElement(By.xpath("//input[@type='file']")).sendKeys(file);
+        driver.findElement(By.xpath("//input[@type='file']")).sendKeys(photo);
         driver.findElement(By.xpath("//*[@id='currentAddress']")).sendKeys(address);
 
         driver.findElement(By.xpath("//*[@id='stateCity-wrapper']/div[2]/div")).click();
